@@ -27,6 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_YEAR = "year";
     private static final String COLUMN_STARS = "stars";
 
+    //Links instance of db helper class
     public DBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VER);
     }
@@ -87,7 +88,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Song> getSongDetails() {
 
-        ArrayList<Song> tasks = new ArrayList<Song>();
+        ArrayList<Song> songs = new ArrayList<Song>();
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {COLUMN_ID, COLUMN_TITLE, COLUMN_SINGERS, COLUMN_YEAR, COLUMN_STARS};
 
@@ -104,7 +105,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 int year = cursor.getInt(3);
                 int stars = cursor.getInt(4);
                 Song obj = new Song(title, singers, year, stars);
-                tasks.add(obj);
+                songs.add(obj);
                 //moveToNext proceeds to the next row
             } while (cursor.moveToNext());
         }
@@ -112,9 +113,66 @@ public class DBHelper extends SQLiteOpenHelper {
         //Closing the db connection
         cursor.close();
         db.close();
-        return tasks;
+        return songs;
 
     }
+
+    public ArrayList<Song> filterSongStars(int keyword) {
+        ArrayList<Song> songs = new ArrayList<Song>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns= {COLUMN_ID, COLUMN_TITLE, COLUMN_SINGERS, COLUMN_YEAR, COLUMN_STARS};
+        String condition = COLUMN_STARS + " Like ?";
+        String[] args = { "%" +  keyword + "%"};
+        Cursor cursor = db.query(TABLE_SONG, columns, condition, args,null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String singers = cursor.getString(2);
+                int year = cursor.getInt(3);
+                int stars = cursor.getInt(4);
+                Song obj = new Song(title, singers, year, stars);
+                songs.add(obj);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return songs;
+    }
+
+    public int updateSong(Song data){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TITLE, data.getTitle());
+        values.put(COLUMN_SINGERS, data.getSingers());
+        values.put(COLUMN_YEAR, data.getYear());
+        values.put(COLUMN_STARS, data.getStar());
+
+        String condition = COLUMN_ID + "= ?";
+        String[] args = {String.valueOf(data.getId())};
+
+        //gets a number that represents no. of affected/modified/changed rows in the table
+        //typically is 1 or more updated
+        int result = db.update(TABLE_SONG, values, condition, args);
+        db.close();
+
+        return result;
+
+
+    }
+
+
+
+
+
+
+
+
 
 
 

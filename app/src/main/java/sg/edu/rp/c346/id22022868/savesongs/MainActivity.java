@@ -2,9 +2,11 @@ package sg.edu.rp.c346.id22022868.savesongs;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         rgStars = findViewById(R.id.rgStars);
         btnInsert = findViewById(R.id.btnInsert);
         btnShowList = findViewById(R.id.btnShowList);
-        lvSongs = findViewById(R.id.lvSongs);
+        //lvSongs = findViewById(R.id.lvSongs);
 
 
 
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Create the DBHelper object, passing in the activity's Context
+                /*// Create the DBHelper object, passing in the activity's Context
                 DBHelper db = new DBHelper(MainActivity.this);
 
                 // Insert a task
@@ -98,13 +100,19 @@ public class MainActivity extends AppCompatActivity {
 
                 adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, Songs);
                 lvSongs.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();*/
+
+                Intent i = new Intent(MainActivity.this, ListViewActivity.class);
+                //i.putExtra("data", );
+                startActivity(i);
 
 
 
 
             }
         });
+
+
 
 
 
