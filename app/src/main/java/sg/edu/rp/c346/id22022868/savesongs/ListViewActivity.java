@@ -86,8 +86,10 @@ public class ListViewActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                //Getting the Song object
                 Song target = songs.get(position);
 
+                //Retrieving the Song details by using getters
                 int passId = songs.get(position).getId();
                 String passTitle = songs.get(position).getTitle();
                 String passSingers = songs.get(position).getSingers();

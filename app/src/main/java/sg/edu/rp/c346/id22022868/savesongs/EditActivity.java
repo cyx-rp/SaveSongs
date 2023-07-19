@@ -12,9 +12,10 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity implements Serializable {
 
     EditText etID;
     EditText etTitle;
@@ -52,14 +53,14 @@ public class EditActivity extends AppCompatActivity {
         //receiving Intent from 2nd activity, passing data of lv item selected
         Intent third = getIntent();
         data = (Song) third.getSerializableExtra("data");
-        id = third.getIntExtra("id", 0);
-        title = third.getStringExtra("title");
-        singers = third.getStringExtra("singers");
-        year = third.getIntExtra("year", 0);
-        stars = third.getIntExtra("stars", 0);
+        id = data.getId(); //third.getIntExtra("id", 0);
+        title = data.getTitle();//third.getStringExtra("title");
+        singers = data.getSingers();//third.getStringExtra("singers");
+        year = data.getYear();//third.getIntExtra("year", 0);
+        stars = data.getStar();//third.getIntExtra("stars", 0);
 
         //setting the et such that it shows the data of the lv item selected
-        //etID.setText(Integer.toString(id));
+        etID.setText(Integer.toString(id));
         etTitle.setText(title);
         etSingers.setText(singers);
         etYear.setText(Integer.toString(year));
@@ -72,13 +73,6 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 DBHelper db = new DBHelper(EditActivity.this);
-
-
-
-                data.setTitle(title);
-                data.setSinger(singers);
-                data.setYear(year);
-                data.setStars(stars);
 
                 //if else statement to get ID of button selected so that we can assign value to that button
                 if (rgStars.getCheckedRadioButtonId() == R.id.radioButton) {
@@ -97,6 +91,9 @@ public class EditActivity extends AppCompatActivity {
                     stars = 5;
                 }
 
+                data.setTitle(etTitle.getText().toString());
+                data.setSinger(etSingers.getText().toString());
+                data.setYear(Integer.parseInt(etYear.getText().toString()));
                 data.setStars(stars);
 
                 db.updateSong(data);

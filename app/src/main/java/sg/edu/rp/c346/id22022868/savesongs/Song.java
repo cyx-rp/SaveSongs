@@ -13,8 +13,8 @@ public class Song implements Serializable {
     private int stars;
 
     //Constructors
-    public Song(String title, String singers, int year, int stars) {
-        this.id = 1;
+    public Song(int id, String title, String singers, int year, int stars) {
+        this.id = id;
         this.title = title;
         this.singers = singers;
         this.year = year;

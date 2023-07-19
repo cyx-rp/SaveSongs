@@ -104,7 +104,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String singers = cursor.getString(2);
                 int year = cursor.getInt(3);
                 int stars = cursor.getInt(4);
-                Song obj = new Song(title, singers, year, stars);
+                Song obj = new Song(id, title, singers, year, stars);
                 songs.add(obj);
                 //moveToNext proceeds to the next row
             } while (cursor.moveToNext());
@@ -117,6 +117,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    //Used to filter all the songs with 5*
     public ArrayList<Song> filterSongStars(int keyword) {
         ArrayList<Song> songs = new ArrayList<Song>();
 
@@ -133,7 +134,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String singers = cursor.getString(2);
                 int year = cursor.getInt(3);
                 int stars = cursor.getInt(4);
-                Song obj = new Song(title, singers, year, stars);
+                Song obj = new Song(id, title, singers, year, stars);
                 songs.add(obj);
             } while (cursor.moveToNext());
         }
@@ -143,6 +144,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return songs;
     }
 
+    //Update selected song
     public int updateSong(Song data){
 
         SQLiteDatabase db = this.getWritableDatabase();
